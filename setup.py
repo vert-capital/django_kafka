@@ -30,6 +30,4 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    zip_safe=False,  # dot not package as egg or django will not found management commands
-
 )
