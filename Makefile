@@ -7,7 +7,7 @@ VENV_PATH=~/venv/django-kafka
 
 flake8:
 	echo "verify pep8 ..."
-	cd vert_kafka && black . && isort . && flake8 .
+	cd django_kafka && black . && isort . && flake8 .
 	cd examples && black . && isort . && flake8 .
 
 pip_install:

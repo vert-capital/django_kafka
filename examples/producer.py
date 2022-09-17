@@ -1,4 +1,4 @@
-from vert_kafka.producer import producer
+from django_kafka.django_kafka.producer import producer
 
 # settings.KAFKA_BOOTSTRAP_SERVER = "localhost:9092"
 # settings.KAFKA_CLIENT_ID = "client_id"

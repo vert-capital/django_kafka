@@ -10,8 +10,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="vert_kafka",
-    version="2.0.1",
+    name="django_kafka",
+    version="1.0.2",
     author="VertCapital",
     author_email="thiago@vert-capital.com.br",
     description="Producer and Consumer for Kafka and django projects",
