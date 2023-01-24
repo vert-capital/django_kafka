@@ -9,7 +9,7 @@ def kafka_consumer_run() -> None:
     conf = {
         "bootstrap.servers": settings.KAFKA_BOOTSTRAP_SERVER,
         "group.id": settings.KAFKA_GROUP_ID,
-        "auto.offset.reset": "earliest",
+        "auto.offset.reset": settings.KAFKA_OFFSET_RESET or "earliest",
     }
 
     consumer: Consumer = Consumer(conf)
@@ -56,10 +56,22 @@ def dynamic_call_action(action: str, consumer: Consumer, msg: Message) -> None:
     function_name: str = action.split(".")[-1]
 
     # import module
-    module = __import__(module_path, fromlist=[function_name])
+    try:
+        module = __import__(module_path, fromlist=[function_name])
+    except:
+        print("No module found for action: {}".format(action))
+        return
 
     # get function from module
-    function = getattr(module, function_name)
+    try:
+        function = getattr(module, function_name)
+    except:
+        print("No function found for action: {}".format(action))
+        return
 
     # call function
-    function(consumer=consumer, msg=msg)
+    try:
+        function(consumer=consumer, msg=msg)
+    except:
+        print("Error calling action: {}".format(action))
+        return
