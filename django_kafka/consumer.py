@@ -9,7 +9,7 @@ def kafka_consumer_run() -> None:
     conf = {
         "bootstrap.servers": settings.KAFKA_BOOTSTRAP_SERVER,
         "group.id": settings.KAFKA_GROUP_ID,
-        "auto.offset.reset": settings.KAFKA_OFFSET_RESET or "earliest",
+        "auto.offset.reset": settings.KAFKA_OFFSET_RESET if hasattr(settings, "KAFKA_OFFSET_RESET") else "earliest",
     }
 
     consumer: Consumer = Consumer(conf)
