@@ -20,8 +20,13 @@ def producer(
 
     producer = Producer(conf)
 
+    headers = {
+        "producer_id": settings.KAFKA_CLIENT_ID,
+        "hostname": socket.gethostname(),
+    }
+
     producer.produce(
-        topic, key=key, value=message, on_delivery=on_delivery or delivery_report
+        topic, key=key, value=message, on_delivery=on_delivery or delivery_report, headers=headers
     )
     producer.flush()
 
