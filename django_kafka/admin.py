@@ -26,10 +26,10 @@ class  SetupDjangoKafka():
         for topic, f in fs.items():
             try:
                 f.result()  # The result itself is None
-                print("Topic {} created".format(topic))
+                # print("Topic {} created".format(topic))
                 logger.info("Topic {} created".format(topic))
             except Exception as e:
-                print("Failed to create topic {}: {}".format(topic, e))
+                # print("Failed to create topic {}: {}".format(topic, e))
                 logger.error("Failed to create topic {}: {}".format(topic, e))
 
 
