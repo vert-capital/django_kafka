@@ -1,5 +1,10 @@
+import logging
+
 from confluent_kafka import Consumer, Message
 from django.conf import settings
+
+# Configura o logger específico para a sua biblioteca
+logger = logging.getLogger(__name__)
 
 KAFKA_RUNNING: bool = True
 
@@ -26,18 +31,21 @@ def kafka_consumer_run() -> None:
                 continue
             if msg.error():
                 print("Consumer error: {}".format(msg.error()))
+                logger.error("Consumer error: {}".format(msg.error()))
                 continue
 
             callback: str = settings.KAFKA_TOPICS.get(msg.topic())
 
             if callback is None:
                 print("No callback found for topic: {}".format(msg.topic()))
+                logger.error("No callback found for topic: {}".format(msg.topic()))
                 continue
 
             # call the callback string as function
             dynamic_call_action(callback, consumer, msg)
     except Exception as e:
         print(e)
+        logger.error(e)
     finally:
         consumer.close()
 
@@ -60,6 +68,7 @@ def dynamic_call_action(action: str, consumer: Consumer, msg: Message) -> None:
         module = __import__(module_path, fromlist=[function_name])
     except:
         print("No module found for action: {}".format(action))
+        logger.error("No module found for action: {}".format(action))
         return
 
     # get function from module
@@ -67,6 +76,7 @@ def dynamic_call_action(action: str, consumer: Consumer, msg: Message) -> None:
         function = getattr(module, function_name)
     except:
         print("No function found for action: {}".format(action))
+        logger.error("No function found for action: {}".format(action))
         return
 
     # call function
@@ -74,4 +84,5 @@ def dynamic_call_action(action: str, consumer: Consumer, msg: Message) -> None:
         function(consumer=consumer, msg=msg)
     except:
         print("Error calling action: {}".format(action))
+        logger.error("Error calling action: {}".format(action))
         return

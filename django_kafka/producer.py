@@ -1,3 +1,4 @@
+import logging
 import socket
 from types import FunctionType
 from uuid import uuid4
@@ -5,6 +6,8 @@ from uuid import uuid4
 from confluent_kafka import Producer
 from django.conf import settings
 
+# Configura o logger específico para a sua biblioteca
+logger = logging.getLogger(__name__)
 
 def producer(
     topic: str, message: str, key: str = None, on_delivery: FunctionType = None
@@ -41,8 +44,14 @@ def delivery_report(err, msg):
 
     if err is not None:
         print("Delivery failed for User record {}: {}".format(msg.key(), err))
+        logger.error("Delivery failed for User record {}: {}".format(msg.key(), err))
         return
     print(
+        "User record {} successfully produced to {} [{}] at offset {}".format(
+            msg.key(), msg.topic(), msg.partition(), msg.offset()
+        )
+    )
+    logger.info(
         "User record {} successfully produced to {} [{}] at offset {}".format(
             msg.key(), msg.topic(), msg.partition(), msg.offset()
         )
