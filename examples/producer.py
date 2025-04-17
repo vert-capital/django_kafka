@@ -16,11 +16,6 @@ def on_delivery(err, msg):
     if err is not None:
         print("Delivery failed for User record {}: {}".format(msg.key(), err))
         return
-    print(
-        "User record {} successfully produced to {} [{}] at offset {}".format(
-            msg.key(), msg.topic(), msg.partition(), msg.offset()
-        )
-    )
 
 
 producer("topic", "message", on_delivery=on_delivery)
