@@ -46,9 +46,9 @@ def kafka_consumer_run() -> None:
 
             if callback == "":
                 # Skip empty callbacks
-                logger.warning(
-                    "Empty callback for topic: {}. Skipping.".format(msg.topic())
-                )
+                # logger.warning(
+                #     "Empty callback for topic: {}. Skipping.".format(msg.topic())
+                # )
                 consumer.commit(message=msg)
                 continue
 
