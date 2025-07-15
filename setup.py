@@ -21,7 +21,7 @@ setup(
     packages=find_packages(exclude=["ez_setup", "examples", "tests", "release"]),
     install_requires=[
         "Django>=2.0",
-        "confluent-kafka==1.9.2",
+        "confluent-kafka==2.11.0",
     ],
     include_package_data=True,
     zip_safe=False,
